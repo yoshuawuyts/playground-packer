@@ -1,0 +1,35 @@
+{
+  "variables": {
+      "git_commit": "",
+      "git_branch": "",
+      "node_version": "6",
+      "project_id": "null"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["mkdir -p /usr/src/app"]
+    },
+    {
+      "type": "file",
+      "source": "./template",
+      "destination": "/user/src/app"
+    }
+  ],
+  "builders": [
+    {
+      "type": "docker",
+      "image": "mhart/alpine-node:{{user `node_version`}}",
+      "commit": true,
+      "run_command": [ "-d", "-i", "-t", "{{.Image}}", "/bin/sh" ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "docker-tag",
+      "repository": "gcr.io/{{user `project_id`}}/ruby212",
+      "tag": "{{user `git_branch`}}-{{user `git_commit`}}",
+      "only": ["docker"]
+    }
+  ]
+}

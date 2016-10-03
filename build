@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# in a real build we read the vals from the env / agent
+packer build \
+  -var 'git_commit=123123123' \
+  -var 'git_branch=master' \
+  -var 'node_version=6' \
+  -var 'project_id=playground_packer' \
+  template.json
